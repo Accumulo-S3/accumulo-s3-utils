@@ -1,0 +1,17 @@
+# Maven ignores
+/target/
+
+# IDE ignores
+/.settings/
+/.project
+/.classpath
+/.pydevproject
+/.idea
+/*.iml
+/*.ipr
+/*.iws
+/nbproject/
+/nbactions.xml
+/nb-configuration.xml
+/.vscode/
+/.factorypath
