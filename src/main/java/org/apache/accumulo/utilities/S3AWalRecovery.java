@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,21 +59,32 @@ public class S3AWalRecovery {
                     "1. The S3 endpoint URL\n" +
                     "2. The S3 bucket name\n" +
                     "3. The s3a buffer directory (/tmp/hadoop-${user})\n" +
-                    "4. The directory/prefix in S3 where write ahead logs are written to by accumulo (accumulo-wal/wal/)");
+                    "4. The directory/prefix in S3 where write ahead logs are written to by accumulo (accumulo-wal/wal/)" +
+                    "5. SSL enabled." +
+                    "6. Path style access.");
             System.exit(-1);
         }
         int i = 0;
         String endpointUrl = args[i++];
         String bucketName = args[i++];
         String s3aBufferDir = args[i++];
-        String accumuloS3WalPrefix = args[i];
+        String accumuloS3WalPrefix = args[i++];
+        boolean sslEnabled = Boolean.parseBoolean(args[i++]);
+        boolean pathStyleAccess = Boolean.parseBoolean(args[i]);
 
         DefaultAWSCredentialsProviderChain defaultAWSCredentialsProviderChain = new DefaultAWSCredentialsProviderChain();
         AwsClientBuilder.EndpointConfiguration epc = new AwsClientBuilder.EndpointConfiguration(endpointUrl, AwsHostNameUtils.parseRegion(endpointUrl, AmazonS3Client.S3_SERVICE_NAME));
+        ClientConfiguration clientConfig = new ClientConfiguration();
+        if(sslEnabled) {
+            clientConfig.setProtocol(Protocol.HTTPS);
+        } else {
+            clientConfig.setProtocol(Protocol.HTTP);
+        }
         AmazonS3 client = AmazonS3ClientBuilder
-                .standard()
-                .withEndpointConfiguration(epc)
-                .withCredentials(defaultAWSCredentialsProviderChain).build();
+          .standard()
+          .withEndpointConfiguration(epc)
+          .withPathStyleAccessEnabled(pathStyleAccess)
+          .withCredentials(defaultAWSCredentialsProviderChain).build();
 
         new S3AWalRecovery(client, bucketName, s3aBufferDir, accumuloS3WalPrefix).run();
     }
