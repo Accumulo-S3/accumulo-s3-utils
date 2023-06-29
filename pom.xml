@@ -16,7 +16,7 @@
 <!--    <artifactId>accumulo-project</artifactId>-->
 <!--    <version>2.1.0</version>-->
 <!--  </parent>-->
-  <groupId>focusedleap</groupId>
+  <groupId>r62</groupId>
   <artifactId>accumulo-s3-utils</artifactId>
   <version>2.1.0</version>
   <properties>
