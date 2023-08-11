@@ -49,6 +49,8 @@ public class PrepBucketForInit {
     boolean sslEnabled = Boolean.parseBoolean(args[i++]);
     boolean pathStyleAccess = Boolean.parseBoolean(args[i]);
 
+    endpointUrl = addProtocol(endpointUrl, sslEnabled);
+
     DefaultAWSCredentialsProviderChain defaultAWSCredentialsProviderChain = new DefaultAWSCredentialsProviderChain();
     AwsClientBuilder.EndpointConfiguration epc = new AwsClientBuilder.EndpointConfiguration(endpointUrl, AwsHostNameUtils.parseRegion(endpointUrl, AmazonS3Client.S3_SERVICE_NAME));
     ClientConfiguration clientConfig = new ClientConfiguration();
@@ -97,5 +99,21 @@ public class PrepBucketForInit {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private static String addProtocol(String endpointURL, boolean sslEnabled) {
+    String url;
+    if(!endpointURL.toLowerCase().startsWith("http")) {
+      if (sslEnabled) {
+        url = "https://" + endpointURL;
+      } else {
+        url = "http://" + endpointURL;
+      }
+    } else {
+      url = endpointURL;
+    }
+
+    LOG.info("Using endpoint URL [{}]", url);
+    return url;
   }
 }
