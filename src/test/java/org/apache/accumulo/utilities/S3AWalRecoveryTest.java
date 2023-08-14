@@ -43,8 +43,8 @@ public class S3AWalRecoveryTest {
     private static final String WAL1_PART12_NAME;
     private static final String WAL2_PART1_NAME;
     private static final String WAL2_PART2_NAME;
-    private static final String BLOCK1_COMPACTION_FILE_NAME = "s3ablock-0001-accumuloEFSaccumuloEFStablesEFS+rEFSroot_tabletEFSA0000005.rf_tmp-5585275724905231424.tmp";
-    private static final String BLOCK2_COMPACTION_FILE_NAME = "s3ablock-0002-accumuloEFSaccumuloEFStablesEFS+rEFSroot_tabletEFSA0000005.rf_tmp-5585275724905231424.tmp";
+    private static final String BLOCK1_COMPACTION_FILE_NAME = "s3ablock-0001-38dbaaaa-1da3-46ce-879d-047242b547e4-00000014-accumuloEFSaccumuloEFStablesEFS+rEFSroot_tabletEFSA0000005.rf_tmp-5585275724905231424.tmp";
+    private static final String BLOCK2_COMPACTION_FILE_NAME = "s3ablock-0002-38dbaaaa-1da3-46ce-879d-047242b547e4-00000014-accumuloEFSaccumuloEFStablesEFS+rEFSroot_tabletEFSA0000005.rf_tmp-5585275724905231424.tmp";
     private static final String WAL1_S3_KEY;
     private static final String WAL2_S3_KEY;
     private static final String COMPACTION_S3_KEY = "accumulo/accumulo/tables/+r/root_tablet/A0000005.rf_tmp";
@@ -53,22 +53,22 @@ public class S3AWalRecoveryTest {
     static {
         try {
             WAL1_PART1_NAME = String.format(
-                    "s3ablock-0001-accumulo-walEFSwalEFS%s+9997EFSe2823e96-6e51-4657-b912-840c65f36a9a-5585275724905231424.tmp",
+                    "s3ablock-0001-38db31ec-1da3-46ce-879d-047242b547e4-00000014-accumulo-walEFSwalEFS%s+9997EFSdda671d8-0732-49ed-99a2-c635ccc99289-9371231453882875853.tmp",
                     Inet4Address.getLocalHost().getHostName());
             WAL1_PART2_NAME = String.format(
-                    "s3ablock-0002-accumulo-walEFSwalEFS%s+9997EFSe2823e96-6e51-4657-b912-840c65f36a9a-5585275724905231424.tmp",
+                    "s3ablock-0002-38db31ec-1da3-46ce-879d-047242b547e4-00000014-accumulo-walEFSwalEFS%s+9997EFSdda671d8-0732-49ed-99a2-c635ccc99289-9371231453882875853.tmp",
                     Inet4Address.getLocalHost().getHostName());
             WAL1_PART12_NAME = String.format(
-                    "s3ablock-0012-accumulo-walEFSwalEFS%s+9997EFSe2823e96-6e51-4657-b912-840c65f36a9a-5585275724905231424.tmp",
+                    "s3ablock-0012-38db31ec-1da3-46ce-879d-047242b547e4-00000014-accumulo-walEFSwalEFS%s+9997EFSdda671d8-0732-49ed-99a2-c635ccc99289-9371231453882875853.tmp",
                     Inet4Address.getLocalHost().getHostName());
             WAL2_PART1_NAME = String.format(
-                    "s3ablock-0001-accumulo-walEFSwalEFS%s+9997EFSe6d6f4c9-1bc7-4517-b3c7-362c0dfa1bbd-8653103153730461698.tmp",
+                    "s3ablock-0001-38db31ec-1da3-46ce-879d-047242b547e4-00000014-accumulo-walEFSwalEFS%s+9997EFSe6d6f4c9-1bc7-4517-b3c7-362c0dfa1bbd-8653103153730461698.tmp",
                     Inet4Address.getLocalHost().getHostName());
             WAL2_PART2_NAME = String.format(
-                    "s3ablock-0002-accumulo-walEFSwalEFS%s+9997EFSe6d6f4c9-1bc7-4517-b3c7-362c0dfa1bbd-8653103153730461698.tmp",
+                    "s3ablock-0002-38db31ec-1da3-46ce-879d-047242b547e4-00000014-accumulo-walEFSwalEFS%s+9997EFSe6d6f4c9-1bc7-4517-b3c7-362c0dfa1bbd-8653103153730461698.tmp",
                     Inet4Address.getLocalHost().getHostName());
             WAL1_S3_KEY = String.format(
-                    "accumulo-wal/wal/%s+9997/e2823e96-6e51-4657-b912-840c65f36a9a",
+                    "accumulo-wal/wal/%s+9997/dda671d8-0732-49ed-99a2-c635ccc99289",
                     Inet4Address.getLocalHost().getHostName());
             WAL2_S3_KEY = String.format(
                     "accumulo-wal/wal/%s+9997/e6d6f4c9-1bc7-4517-b3c7-362c0dfa1bbd",

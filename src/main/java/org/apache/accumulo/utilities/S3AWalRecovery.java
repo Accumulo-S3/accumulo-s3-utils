@@ -38,7 +38,7 @@ public class S3AWalRecovery {
     private static final Logger LOG = LoggerFactory.getLogger(S3AWalRecovery.class);
     private static final String ESCAPED_FORWARD_SLASH = "EFS";
     private static final String ESCAPED_BACKWARD_SLASH = "EBS";
-    private static final Pattern PATTERN = Pattern.compile("^s3ablock-(\\d{4})-(.*?)-\\d+\\.tmp$");
+    private static final Pattern PATTERN = Pattern.compile("^s3ablock-(\\d{4})-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}-\\d{8}-(.*?)-\\d+\\.tmp$");
     private static final int PATTERN_PART_NUMBER_GROUP = 1;
     private static final int PATTERN_KEY_GROUP = 2;
     private static final String PART_ONE_BUFFERED_FILE_NAME_PREFIX = "s3ablock-0001";
@@ -54,13 +54,13 @@ public class S3AWalRecovery {
                     "the tablet server's active processing.");
             System.exit(-1);
         }
-        if(args.length != 4) {
+        if(args.length != 6) {
             LOG.error("Invalid number of arguments. The recovery tool requires the following arguments in order:\n" +
                     "1. The S3 endpoint URL\n" +
                     "2. The S3 bucket name\n" +
                     "3. The s3a buffer directory (/tmp/hadoop-${user})\n" +
-                    "4. The directory/prefix in S3 where write ahead logs are written to by accumulo (accumulo-wal/wal/)" +
-                    "5. SSL enabled." +
+                    "4. The directory/prefix in S3 where write ahead logs are written to by accumulo (accumulo-wal/wal/)\n" +
+                    "5. SSL enabled.\n" +
                     "6. Path style access.");
             System.exit(-1);
         }
@@ -195,12 +195,12 @@ public class S3AWalRecovery {
                     .withPartNumber(finalPartNumber)
                     .withLastPart(true);
             s3client.uploadPart(upr);
-                    } else if(key.endsWith(".rf_tmp")) {
-            LOG.info("Buffered file [{}] matches a temporary r file [{}]. It looks like the tserver died during a compation." +
+        } else if(key.endsWith(".rf_tmp")) {
+            LOG.info("Buffered file [{}] matches a temporary r file [{}]. It looks like the tserver died during a compaction." +
                     " The manager will restart the compaction, so we'll abort the multi part upload and delete the buffered file.", file, key);
             AbortMultipartUploadRequest abortRequest = new AbortMultipartUploadRequest(bucketName, key, uploadID);
             s3client.abortMultipartUpload(abortRequest);
-                    } else {
+        } else {
             throw new IOException(String.format("Unsure how to handle multipart buffered file [%s]", file));
         }
 
